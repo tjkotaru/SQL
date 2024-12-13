@@ -1,0 +1,12 @@
+ WITH cte1 AS (
+SELECT NAME, OCCUPATION, row_number() OVER (partition by occupation order by name) AS row_num
+FROm occupations
+)
+SELECT 
+    MAX(CASE WHEN Occupation= 'Doctor' Then Name END) AS Doctor,
+    MAX(CASE WHEN Occupation= 'Professor' Then Name END) AS Professor,
+    MAX(CASE WHEN Occupation= 'Singer' Then Name END) AS Singer,
+    MAX(CASE WHEN Occupation= 'Actor' Then Name END) AS Actor
+from cte1
+GROUP BY row_num
+;
