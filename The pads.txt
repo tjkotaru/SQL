@@ -1,0 +1,12 @@
+select 
+concat (name , '(' , substr(Occupation, 1,1) , ')')
+from occupations order by name;
+
+
+select concat('There are a total of ' , cnt,' ', occu, 's.') from (
+select
+ count(name)  as cnt,
+ lower(occupation) as occu
+from occupations
+group by occu
+order by cnt  )a;

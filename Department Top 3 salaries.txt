@@ -1,0 +1,15 @@
+with recs as (select distinct
+d.name as Department,
+e.name as Employee,
+e.salary as Salary,
+dense_rank() over(partition by d.name order by  e.salary desc) as rn
+from employee e
+join department d on
+e.departmentid = d.id
+)
+
+select 
+Department,
+Employee,
+Salary from recs where rn <=3
+

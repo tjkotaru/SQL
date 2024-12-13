@@ -1,0 +1,18 @@
+with t1 as (
+  select v.user_id, v.visit_date, count(amount) as 'transactions_count'
+  from Visits as v
+  left join Transactions as t on v.user_id = t.user_id and v.visit_date = t.transaction_date
+  group by v.user_id, v.visit_date
+), t2 as (
+select transactions_count, count(*) as 'visits_count'
+ from t1
+ group by transactions_count
+), t3 as (
+  SELECT row_number() over () as 'transactions_count'
+  FROM transactions
+  union all select 0
+)
+select t3.transactions_count, ifnull(visits_count, 0) as 'visits_count' from t2
+right join t3 on t2.transactions_count = t3.transactions_count 
+where t3.transactions_count <= (select max(transactions_count) from t2)
+order by 1

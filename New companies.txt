@@ -1,0 +1,17 @@
+select 
+    c.company_code,
+    c. founder,
+    count(distinct lm.lead_manager_code) as lead_manager_code_count,
+    count(distinct sm.senior_manager_code) as senior_manager_code_count,
+    count(distinct e.manager_code) as manager_code_count,
+    count(distinct e.employee_code) as employee_code_count
+from company c
+join Lead_Manager lm on 
+c.company_code = lm.company_code
+join senior_manager sm on 
+c.company_code = sm.company_code
+join manager m on 
+c.company_code = m.company_code
+join employee e on 
+c.company_code = e.company_code
+group by 1, 2;
